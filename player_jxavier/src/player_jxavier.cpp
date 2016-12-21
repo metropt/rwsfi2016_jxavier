@@ -4,6 +4,7 @@
    |_________________________________| */
 #include <ros/ros.h>
 #include <rwsfi2016_libs/player.h>
+#include <math.h>
 
 /* _________________________________
    |                                 |
@@ -55,7 +56,19 @@ public:
       }
     }
 
-    if(dist < 1.5)
+    cout << getAngleToPLayer("map") << endl;
+    if( getDistanceToPlayer("map") > 7.5 && (getAngleToPLayer("map") > 0.25 || getAngleToPLayer("map") < -0.25 ) )
+    {
+      playerToKill = msg.green_alive.at(msg.green_alive.size()-1);
+      if (msg.max_displacement > 0.25)
+        move(0.25, getAngleToPLayer("map")  );
+      else
+        move(msg.max_displacement, getAngleToPLayer("map")  );
+      return;
+    }
+
+
+    if(dist < 2)
       move(msg.max_displacement, getAngleToPLayer(playerToKill) * -1 );
     else
       move(msg.max_displacement, getAngleToPLayer(playerToKill)  );
