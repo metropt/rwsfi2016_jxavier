@@ -7,6 +7,7 @@
 #include <std_msgs/String.h>
 #include <visualization_msgs/Marker.h>
 #include <math.h>
+#include <rwsfi2016_msgs/GameQuery.h>
 
 /* _________________________________
    |                                 |
@@ -26,6 +27,14 @@ class MyPlayer: public rwsfi2016_libs::Player
 public:
   ros::Publisher publisher;
   visualization_msgs::Marker bocas_msg;
+  ros::ServiceServer challengeService;
+
+  bool callback(rwsfi2016_msgs::GameQueryRequest& request, rwsfi2016_msgs::GameQueryResponse& response)
+  {
+    response.resposta = "Hello Service!!!";
+    return true;
+  }
+
   /**
      * @brief Constructor, nothing to be done here
      * @param name player name
@@ -44,6 +53,9 @@ public:
     bocas_msg.color.r = 0.0;
     bocas_msg.color.g = 0.0;
     bocas_msg.color.b = 0.0;
+
+    challengeService = node.advertiseService("/jxavier/game_query", &MyPlayer::callback, this);
+
   };
 
   void play(const rwsfi2016_msgs::MakeAPlay& msg)
