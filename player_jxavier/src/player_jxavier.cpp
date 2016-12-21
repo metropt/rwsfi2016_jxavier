@@ -89,23 +89,23 @@ public:
     }
 
     //cout << getAngleToPLayer("map") << endl;
-    if (msg.max_displacement + getDistanceToPlayer("map") >= 7.9 ){
-      move( (7.9-getDistanceToPlayer("map")) , getAngleToPLayer("map")  );
+    /*if (msg.max_displacement + getDistanceToPlayer("map") >= 7.7 ){
+      move( (7.7-getDistanceToPlayer("map")) , getAngleToPLayer("map")  );
       return;
-    }
+    }*/
 
-    if( getDistanceToPlayer("map") >= 7.8 && (getAngleToPLayer("map") > 0.3 || getAngleToPLayer("map") < -0.3 ) )
+    if( getDistanceToPlayer("map") >= 5 && (getAngleToPLayer("map") > 0.6 || getAngleToPLayer("map") < -0.6 ) )
     {
       playerToKill = msg.green_alive.at(msg.green_alive.size()-1);
-      if (msg.max_displacement > 0.1)
-        move(0.1, getAngleToPLayer("map")  );
-      else
+      /*if (msg.max_displacement > 0.2)
+        move(0.2, getAngleToPLayer("map")  );
+      else*/
         move(msg.max_displacement, getAngleToPLayer("map")  );
       return;
     }
 
 
-    if(dist < 2.1)
+    if(dist < 1.9)
       move(msg.max_displacement, getAngleToPLayer(playerToKill) * -1 );
     else
       move(msg.max_displacement, getAngleToPLayer(playerToKill)  );
