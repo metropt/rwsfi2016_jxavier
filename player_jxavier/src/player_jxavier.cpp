@@ -68,7 +68,7 @@ public:
     }
 
 
-    if(dist < 2.5)
+    if(dist < 2.2)
       move(msg.max_displacement, getAngleToPLayer(playerToKill) * -1 );
     else
       move(msg.max_displacement, getAngleToPLayer(playerToKill)  );
