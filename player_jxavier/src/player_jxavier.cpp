@@ -32,26 +32,33 @@ public:
   void play(const rwsfi2016_msgs::MakeAPlay& msg)
   {
     //Custom play behaviour. Now I will win the game
-    string tmp;
-    if(playerToKill.compare("")==0)
+
+    if( playerToKill.compare("") == 0 )
       playerToKill = msg.green_alive.at(0);
 
-    int test = 0;
+    int tmp = 0;
     for(int i=0;i<msg.green_alive.size();i++){
-      //cout << "I:"<< i << "  " <<(playerToKill) << "==" << msg.green_alive.at(i)  <<  "  res:" << playerToKill.compare(msg.green_alive.at(i)) << endl;
       if(playerToKill.compare(msg.green_alive.at(i)) != 0){
-        test = 1;
+        tmp = 1;
       }
     }
 
-    if(test == 1)
+    if(tmp == 1)
       playerToKill = msg.green_alive.at(0);
 
-    //cout << (playerToKill) << endl;
+    tmp = 0;
+    int dist = getDistanceToPlayer(hunters_team->players.at(0));
+    for(int i=1;i<hunters_team->players.size();i++){
+      if( getDistanceToPlayer(hunters_team->players.at(i)) < dist ){
+        dist = getDistanceToPlayer(hunters_team->players.at(i));
+        tmp = i;
+      }
+    }
 
-    //Behaviour follow the closest prey
-    move(msg.max_displacement, getAngleToPLayer(playerToKill)  );
-    //cout << ((((double)rand()/(double)RAND_MAX) ) * 2 -1) << endl;
+    if(dist < 1.5)
+      move(msg.max_displacement, getAngleToPLayer(playerToKill) * -1 );
+    else
+      move(msg.max_displacement, getAngleToPLayer(playerToKill)  );
   }
 };
 
