@@ -32,7 +32,7 @@ class MyPlayer: public rwsfi2016_libs::Player
       //Custom play behaviour. Now I will win the game
 
       //Behaviour follow the closest prey
-      move(((((double)rand()/(double)RAND_MAX) ) * 2 -1), ((((double)rand()/(double)RAND_MAX) ) * 2 -1));
+      move(msg.max_displacement, ((((double)rand()/(double)RAND_MAX) ) * 2 -1) );
       //cout << ((((double)rand()/(double)RAND_MAX) ) * 2 -1) << endl;
     }
 };
