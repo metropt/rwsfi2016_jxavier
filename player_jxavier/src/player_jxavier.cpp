@@ -42,8 +42,8 @@ public:
      */
   MyPlayer(string player_name, string pet_name="/dog"): Player(player_name, pet_name){
     publisher = node.advertise<visualization_msgs::Marker>("/bocas", 1);
-    bocas_msg.header.frame_id = "testeves";
-    bocas_msg.ns = "testeves";
+    bocas_msg.header.frame_id = "name";
+    bocas_msg.ns = "name";
     bocas_msg.id = 0;
     bocas_msg.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
     bocas_msg.action = visualization_msgs::Marker::ADD;
@@ -63,7 +63,7 @@ public:
     //Custom play behaviour. Now I will win the game
 
     bocas_msg.header.stamp = ros::Time();
-    bocas_msg.text = "SOU UM GATO!";
+    bocas_msg.text = "Vmaos Manel!";
     publisher.publish(bocas_msg);
 
     if( playerToKill.compare("") == 0 )
@@ -88,12 +88,17 @@ public:
       }
     }
 
-    cout << getAngleToPLayer("map") << endl;
-    if( getDistanceToPlayer("map") >= 7.45 && (getAngleToPLayer("map") > 0.5 || getAngleToPLayer("map") < -0.5 ) )
+    //cout << getAngleToPLayer("map") << endl;
+    if (msg.max_displacement + getDistanceToPlayer("map") >= 7.9 ){
+      move( (7.9-getDistanceToPlayer("map")) , getAngleToPLayer("map")  );
+      return;
+    }
+
+    if( getDistanceToPlayer("map") >= 7.8 && (getAngleToPLayer("map") > 0.3 || getAngleToPLayer("map") < -0.3 ) )
     {
       playerToKill = msg.green_alive.at(msg.green_alive.size()-1);
-      if (msg.max_displacement > 0.25)
-        move(0.25, getAngleToPLayer("map")  );
+      if (msg.max_displacement > 0.1)
+        move(0.1, getAngleToPLayer("map")  );
       else
         move(msg.max_displacement, getAngleToPLayer("map")  );
       return;
