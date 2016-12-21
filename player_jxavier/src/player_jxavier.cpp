@@ -57,7 +57,7 @@ public:
     }
 
     cout << getAngleToPLayer("map") << endl;
-    if( getDistanceToPlayer("map") > 7.5 && (getAngleToPLayer("map") > 0.25 || getAngleToPLayer("map") < -0.25 ) )
+    if( getDistanceToPlayer("map") > 7.5 && (getAngleToPLayer("map") > 0.75 || getAngleToPLayer("map") < -0.75 ) )
     {
       playerToKill = msg.green_alive.at(msg.green_alive.size()-1);
       if (msg.max_displacement > 0.25)
@@ -68,7 +68,7 @@ public:
     }
 
 
-    if(dist < 2)
+    if(dist < 2.5)
       move(msg.max_displacement, getAngleToPLayer(playerToKill) * -1 );
     else
       move(msg.max_displacement, getAngleToPLayer(playerToKill)  );
