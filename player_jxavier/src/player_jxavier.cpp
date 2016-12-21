@@ -37,14 +37,17 @@ public:
       playerToKill = msg.green_alive.at(0);
 
     int test = 0;
-    for(int i=0;i<3;i++){
-      if(playerToKill.compare(msg.green_alive.at(i)) == 0){
+    for(int i=0;i<msg.green_alive.size();i++){
+      //cout << "I:"<< i << "  " <<(playerToKill) << "==" << msg.green_alive.at(i)  <<  "  res:" << playerToKill.compare(msg.green_alive.at(i)) << endl;
+      if(playerToKill.compare(msg.green_alive.at(i)) != 0){
         test = 1;
       }
     }
 
-    if(!test)
+    if(test == 1)
       playerToKill = msg.green_alive.at(0);
+
+    //cout << (playerToKill) << endl;
 
     //Behaviour follow the closest prey
     move(msg.max_displacement, getAngleToPLayer(playerToKill)  );
