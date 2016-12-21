@@ -89,8 +89,8 @@ public:
     }
 
     //cout << getAngleToPLayer("map") << endl;
-    if (msg.max_displacement + getDistanceToPlayer("map") >= 7.7 ){
-      move( (7.7-getDistanceToPlayer("map")) , getAngleToPLayer("map")  );
+    if (msg.max_displacement + getDistanceToPlayer("map") >= 7.9 ){
+      move( (7.9-getDistanceToPlayer("map")) , getAngleToPLayer("map")  );
       return;
     }
 
