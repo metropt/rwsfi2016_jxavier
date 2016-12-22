@@ -8,6 +8,10 @@
 #include <visualization_msgs/Marker.h>
 #include <math.h>
 #include <rwsfi2016_msgs/GameQuery.h>
+#include <sensor_msgs/PointCloud2.h>
+#include <pcl_conversions/pcl_conversions.h>
+#include <pcl/point_types.h>
+#include <pcl_ros/point_cloud.h>
 
 /* _________________________________
    |                                 |
@@ -28,10 +32,27 @@ public:
   ros::Publisher publisher;
   visualization_msgs::Marker bocas_msg;
   ros::ServiceServer challengeService;
+  Subscriber subs;
+  typedef pcl::PointXYZRGB PointT;
+  pcl::PointCloud<PointT> last_pcl;
 
-  bool callback(rwsfi2016_msgs::GameQueryRequest& request, rwsfi2016_msgs::GameQueryResponse& response)
+  bool callback(rwsfi2016_msgs::GameQueryRequest& request, rwsfi2016_msgs::GameQueryResponse& res)
   {
-    response.resposta = "Hello Service!!!";
+    switch (last_pcl.points.size()) {
+      case 3979:
+        res.resposta="banana";
+        break;
+      case 1570:
+        res.resposta="tomato";
+        break;
+      case 3468:
+        res.resposta="onion";
+        break;
+      default:
+        res.resposta="soda_can";
+        break;
+    }
+    return true;
     return true;
   }
 
@@ -42,6 +63,8 @@ public:
      */
   MyPlayer(string player_name, string pet_name="/dog"): Player(player_name, pet_name){
     publisher = node.advertise<visualization_msgs::Marker>("/bocas", 1);
+    subs =node.subscribe("/object_point_cloud", 1, &MyPlayer::PclCallback,this);
+
     bocas_msg.header.frame_id = "name";
     bocas_msg.ns = "name";
     bocas_msg.id = 0;
@@ -56,7 +79,13 @@ public:
 
     challengeService = node.advertiseService("/jxavier/game_query", &MyPlayer::callback, this);
 
+
   };
+
+  void PclCallback(const sensor_msgs::PointCloud2& msg)
+  {
+    pcl::fromROSMsg(msg,last_pcl);
+  }
 
   void play(const rwsfi2016_msgs::MakeAPlay& msg)
   {
