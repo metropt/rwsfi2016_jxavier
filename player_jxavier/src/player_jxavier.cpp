@@ -38,21 +38,35 @@ public:
 
   bool callback(rwsfi2016_msgs::GameQueryRequest& request, rwsfi2016_msgs::GameQueryResponse& res)
   {
-    switch (last_pcl.points.size()) {
-      case 3979:
-        res.resposta="banana";
-        break;
-      case 1570:
-        res.resposta="tomato";
-        break;
-      case 3468:
-        res.resposta="onion";
-        break;
-      default:
-        res.resposta="soda_can";
-        break;
+    double medblue=0, medgreen=0;
+    for(int i=0; i< 100; i++)
+    {
+      medblue+=last_pcl.points[i].b;
+      medgreen+=last_pcl.points[i].g;
     }
-    return true;
+    medblue/=100;
+    medgreen/=100;
+    medblue=round(medblue);
+    medgreen=round(medgreen);
+
+    //std::cout <<"MediaBlue: "<< medblue <<std::endl;
+    //std::cout <<"MediaGreen: "<< medgreen <<std::endl;
+
+    if(medblue>=50 && medblue <=90)
+    {
+      res.resposta="onion";
+    }
+    else if(medblue >90)
+    {
+      res.resposta="soda_can";
+    }
+    else if(medblue <50)
+    {
+      if(medgreen<76)
+        res.resposta="tomato";
+      else
+        res.resposta="banana";
+    }
     return true;
   }
 
